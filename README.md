@@ -1,9 +1,28 @@
 # vf-web-kit
-
 Ship variable fonts safely and fast.
+
+- Builds a production-ready web kit with subsetting, CSS, tokens, and a QA specimen.
+- Subsets glyphs from content or explicit strings via `--content` / `--strings`.
+- Supports axis clamping and presets for production ranges via `--axes` / `--preset`.
+
+**Try in 10 seconds**
+```bash
+npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --out ./dist/fontkit
+```
+
+**Demo**
+Record a quick run that shows the generated specimen and the output folder size before/after.
+
+Star if this saves you time.  
+→ Buzz Kit: /buzz-kit
 
 ## Problem Statement
 Shipping variable fonts is harder than it should be. This tool produces a production-ready kit with subsetting, CSS, tokens, and a QA specimen.
+
+## Requirements
+
+- Node.js 20+
+- A valid variable font (TTF/OTF/WOFF2)
 
 ## Installation
 ```bash
@@ -18,6 +37,18 @@ npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --o
 Or:
 ```bash
 npx vf-web-kit font.woff2 --strings "Hamburgefontsiv 0123456789" --out ./dist/fontkit
+```
+
+## Configuration
+
+`vfkit.config.json` is auto-detected if present, or pass `--config <path>`.
+
+```json
+{
+  "content": "./content/**/*.{html,md,mdx,tsx}",
+  "out": "./dist/fontkit",
+  "preset": "ui"
+}
 ```
 
 ## CLI Help
@@ -45,6 +76,12 @@ No. Pure Node mode only by default.
 ## Troubleshooting
 - Missing glyphs: add `--strings` or include content.
 - Complex scripts: avoid aggressive subsetting.
+
+## Exit Codes
+
+- `0` Success
+- `3` Runtime error
+- `4` Invalid arguments
 
 ## How It Works
 1. Extracts visible text.

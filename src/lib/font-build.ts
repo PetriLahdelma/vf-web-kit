@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import subsetFont from 'subset-font';
-import fontkit from 'fontkit';
+import * as fontkit from 'fontkit';
 import { buildTokens } from './tokens.js';
 import { buildSpecimen } from './specimen.js';
 import { buildReport } from './report.js';
@@ -47,17 +47,20 @@ Family: ${font.familyName}
 }
 
 function resolveAxes(axes: string | undefined, axesFile: string | undefined, preset: string | undefined, font: any) {
-  if (axesFile) return JSON.parse(fs.readFileSync(axesFile, 'utf8')).axes;
+  if (axesFile) {
+    const parsed = JSON.parse(fs.readFileSync(axesFile, 'utf8'));
+    if (!parsed?.axes || !Array.isArray(parsed.axes)) {
+      throw new Error('axesFile must contain { "axes": [...] }');
+    }
+    return parsed.axes.map((axis: any) => normalizeAxis(axis));
+  }
   if (axes) {
-    return axes.split(',').map((part) => {
-      const [tag, range] = part.split('=');
-      const [min, max] = range.split('..').map(Number);
-      return { tag, min, max };
-    });
+    return axes.split(',').map((part) => parseAxisSpec(part));
   }
   if (preset === 'ui') return [{ tag: 'wght', min: 400, max: 700 }];
   if (preset === 'editorial') return [{ tag: 'wght', min: 300, max: 900 }];
-  return Object.keys(font.variationAxes || {}).map((tag) => ({ tag, min: font.variationAxes[tag].min, max: font.variationAxes[tag].max }));
+  if (preset) throw new Error('Unknown preset (use ui or editorial)');
+  return Object.keys(font.variationAxes || {}).map((tag) => normalizeAxis({ tag, ...font.variationAxes[tag] }));
 }
 
 function buildCss(font: any, axes: any[]) {
@@ -68,4 +71,28 @@ function buildCss(font: any, axes: any[]) {
   font-display: swap;
   font-variation-settings: ${axisSettings};
 }`;
+}
+
+function parseAxisSpec(part: string) {
+  const [tag, range] = part.split('=');
+  if (!tag || !range) throw new Error(`Invalid axis spec: ${part}`);
+  const [minRaw, maxRaw] = range.split('..');
+  const min = Number(minRaw);
+  const max = Number(maxRaw);
+  return normalizeAxis({ tag, min, max });
+}
+
+function normalizeAxis(axis: any) {
+  if (!axis?.tag || typeof axis.tag !== 'string') {
+    throw new Error('Axis tag is required');
+  }
+  const min = Number(axis.min);
+  const max = Number(axis.max);
+  if (!Number.isFinite(min) || !Number.isFinite(max)) {
+    throw new Error(`Invalid axis range for ${axis.tag}`);
+  }
+  if (min > max) {
+    throw new Error(`Axis min must be <= max for ${axis.tag}`);
+  }
+  return { tag: axis.tag, min, max };
 }

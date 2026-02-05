@@ -4,9 +4,19 @@
   "description": "Build production-ready variable font web kits with subsetting, CSS, tokens, and a specimen.",
   "type": "module",
   "bin": {"vf-web-kit": "dist/cli.js"},
-  "exports": {".": "./dist/index.js"},
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
   "files": ["dist", "README.md", "LICENSE", "CHANGELOG.md"],
-  "scripts": {"build": "tsc -p tsconfig.json", "test": "vitest run", "lint": "tsc -p tsconfig.json --noEmit"},
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
   "engines": {"node": ">=20"},
   "dependencies": {"commander": "11.1.0", "fast-glob": "3.3.2", "fontkit": "2.0.2", "subset-font": "2.4.0"},
   "devDependencies": {"@types/node": "20.11.30", "typescript": "5.4.5", "vitest": "1.4.0"}
