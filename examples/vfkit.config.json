@@ -1,0 +1,5 @@
+{
+  "out": "./dist/fontkit",
+  "content": "./content/**/*.{html,md,mdx,tsx}",
+  "axes": "wght=300..700"
+}
