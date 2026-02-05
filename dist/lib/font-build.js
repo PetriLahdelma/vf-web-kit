@@ -6,7 +6,7 @@ import { buildTokens } from './tokens.js';
 import { buildSpecimen } from './specimen.js';
 import { buildReport } from './report.js';
 
-export async function buildFontKit(opts: { fontPath: string; outDir: string; content: string; axes?: string; axesFile?: string; preset?: string; }) {
+async function buildFontKit(opts) {
   const buf = fs.readFileSync(opts.fontPath);
   const font = fontkit.openSync(opts.fontPath);
   const axes = resolveAxes(opts.axes, opts.axesFile, opts.preset, font);
@@ -46,13 +46,13 @@ Family: ${font.familyName}
   return report;
 }
 
-function resolveAxes(axes: string | undefined, axesFile: string | undefined, preset: string | undefined, font: any) {
+function resolveAxes(axes, axesFile, preset, font) {
   if (axesFile) {
     const parsed = JSON.parse(fs.readFileSync(axesFile, 'utf8'));
     if (!parsed?.axes || !Array.isArray(parsed.axes)) {
       throw new Error('axesFile must contain { "axes": [...] }');
     }
-    return parsed.axes.map((axis: any) => normalizeAxis(axis));
+    return parsed.axes.map((axis) => normalizeAxis(axis));
   }
   if (axes) {
     return axes.split(',').map((part) => parseAxisSpec(part));
@@ -63,7 +63,7 @@ function resolveAxes(axes: string | undefined, axesFile: string | undefined, pre
   return Object.keys(font.variationAxes || {}).map((tag) => normalizeAxis({ tag, ...font.variationAxes[tag] }));
 }
 
-function buildCss(font: any, axes: any[]) {
+function buildCss(font, axes) {
   const axisSettings = axes.map((a) => `'${a.tag}' ${a.min}`).join(', ');
   return `@font-face {
   font-family: '${font.familyName}';
@@ -73,7 +73,7 @@ function buildCss(font: any, axes: any[]) {
 }`;
 }
 
-function parseAxisSpec(part: string) {
+function parseAxisSpec(part) {
   const [tag, range] = part.split('=');
   if (!tag || !range) throw new Error(`Invalid axis spec: ${part}`);
   const [minRaw, maxRaw] = range.split('..');
@@ -82,7 +82,7 @@ function parseAxisSpec(part: string) {
   return normalizeAxis({ tag, min, max });
 }
 
-function normalizeAxis(axis: any) {
+function normalizeAxis(axis) {
   if (!axis?.tag || typeof axis.tag !== 'string') {
     throw new Error('Axis tag is required');
   }
@@ -96,3 +96,5 @@ function normalizeAxis(axis: any) {
   }
   return { tag: axis.tag, min, max };
 }
+
+export { buildFontKit };

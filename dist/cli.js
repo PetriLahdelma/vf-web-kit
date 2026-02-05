@@ -5,7 +5,7 @@ import fg from 'fast-glob';
 import { extractText } from './lib/content-extract.js';
 import { buildFontKit } from './lib/font-build.js';
 
-const exitCode = { OK: 0, RUNTIME_ERROR: 3, INVALID_ARGS: 4 } as const;
+const exitCode = { OK: 0, RUNTIME_ERROR: 3, INVALID_ARGS: 4 };
 
 const program = new Command();
 program
