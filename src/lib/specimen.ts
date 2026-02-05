@@ -15,7 +15,7 @@ export function buildSpecimen(font: any, axes: any[]) {
     document.querySelectorAll('input').forEach((input) => {
       input.addEventListener('input', () => {
         const settings = Array.from(document.querySelectorAll('input'))
-          .map(i => `'${i.dataset.axis}' ${i.value}`)
+          .map(i => "'" + i.dataset.axis + "' " + i.value)
           .join(', ');
         preview.style.fontVariationSettings = settings;
       });
