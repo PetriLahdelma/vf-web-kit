@@ -4,16 +4,41 @@
 </picture>
 
 # Variable Font Web Kit
-Ship variable fonts safely and fast. Subset glyphs, clamp axes, and ship production-ready kits.
+Ship variable fonts safely and fast. Subset glyphs, clamp axes, and ship production-ready kits. Outputs CSS, tokens, and a specimen page for immediate QA.
+
+**Type:** CLI + Library (Node.js)
 
 ![CI](https://github.com/PetriLahdelma/vf-web-kit/actions/workflows/ci.yml/badge.svg) ![Release](https://img.shields.io/github/v/release/PetriLahdelma/vf-web-kit) ![License](https://img.shields.io/github/license/PetriLahdelma/vf-web-kit) ![Stars](https://img.shields.io/github/stars/PetriLahdelma/vf-web-kit)
 
 > [!IMPORTANT]
 > Provide representative content or strings to avoid missing glyphs in the subset.
 
+## Highlights
+- Subsets glyphs and clamps axes safely.
+- Outputs production-ready web font kits.
+- Includes specimen page for QA.
+
+
+## Output
+![Output Preview](branding/screenshots/output-demo.svg)
+
+Example artifacts live in `examples/`.
+
+Need help? Start with `docs/troubleshooting.md`.
+
+Kit outputs include fonts, CSS, tokens, and a specimen page. See `docs/kit-contents.md`.
+
+
 ## Quickstart
 ```bash
 npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --out ./dist/fontkit
+```
+
+
+## CI in 60s
+```yaml
+- name: Build font kit
+  run: npx vf-web-kit path/to/font.ttf --content './content/**/*.{md,tsx}' --out ./dist/fontkit
 ```
 
 ## Demo
@@ -23,80 +48,43 @@ npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --o
 vf-web-kit font.woff2 --strings "Hamburgefontsiv 0123456789" --out ./dist/fontkit
 ```
 
+
+## Compatibility
+- Node.js: 20 (CI on ubuntu-latest).
+- OS: Linux in CI; macOS/Windows unverified.
+- External deps: none.
+
+## Guarantees & Non-Goals
+**Guarantees**
+- Outputs a web-ready kit (fonts, CSS, tokens, specimen).
+- Deterministic given the same inputs and tool version (metadata may vary).
+
+**Non-Goals**
+- Not a full font editor.
+- Does not generate new glyphs.
+
 ## Docs
-Start here: [Installation](#installation) · [Configuration](#configuration) · [CLI Help](#cli-help) · [How It Works](#how-it-works) · [Troubleshooting](#troubleshooting)
+- [Requirements](docs/requirements.md)
+- [Installation](docs/installation.md)
+- [Configuration](docs/configuration.md)
+- [Presets](docs/presets.md)
+- [Kit Contents](docs/kit-contents.md)
+- [Troubleshooting](docs/troubleshooting.md)
+- [Guarantees & Non-Goals](docs/guarantees.md)
+- [Constraints](docs/constraints.md)
+- [Reproducibility](docs/reproducibility.md)
+
+More: [docs/README.md](docs/README.md)
+
+## Examples
+See `examples/README.md` for inputs and expected outputs.
+
+## Used By
+Open a PR to add your org.
+
 
 ## Contributing
 See `CONTRIBUTING.md`.
 
-## Problem Statement
-Shipping variable fonts is harder than it should be. This tool produces a production-ready kit with subsetting, CSS, tokens, and a QA specimen.
-
-## Requirements
-
-- Node.js 20+
-- A valid variable font (TTF/OTF/WOFF2)
-
-## Installation
-```bash
-npm i -D vf-web-kit
-```
-
-## Configuration
-
-`vfkit.config.json` is auto-detected if present, or pass `--config <path>`.
-
-```json
-{
-  "content": "./content/**/*.{html,md,mdx,tsx}",
-  "out": "./dist/fontkit",
-  "preset": "ui"
-}
-```
-
-## CLI Help
-```text
-Usage: vf-web-kit [options] <font>
-
-Options:
-  --content <glob>          Content files to extract glyphs from
-  --strings <text>          Explicit strings to include
-  --axes <spec>             Axis clamp, e.g. "wght=300..700"
-  --axes-file <path>        JSON axes file
-  --preset <name>           ui | editorial
-  --out <dir>               Output directory (default: ./dist/fontkit)
-  --json                    Print report json to stdout
-  -h, --help                Display help
-```
-
-## Screenshots
-- `assets/specimen-preview.png`
-
-## FAQ
-**Requires Python?**
-No. Pure Node mode only by default.
-
-## Troubleshooting
-- Missing glyphs: add `--strings` or include content.
-- Complex scripts: avoid aggressive subsetting.
-
-## Exit Codes
-
-- `0` Success
-- `3` Runtime error
-- `4` Invalid arguments
-
-## How It Works
-1. Extracts visible text.
-2. Subsets the font.
-3. Emits WOFF2 + CSS + tokens.
-4. Generates a specimen.
-
-## Shipping Variable Fonts Safely
-- Use `unicode-range` for subsets.
-- Clamp axes to production ranges.
-- Use `font-display: swap`.
-
 ## License
 MIT.
-

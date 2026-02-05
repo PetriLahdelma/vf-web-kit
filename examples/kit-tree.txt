@@ -1,0 +1,5 @@
+dist/fontkit/
+├─ fonts/InterVar.woff2
+├─ css/fontface.css
+├─ tokens/axes.json
+└─ specimen/index.html

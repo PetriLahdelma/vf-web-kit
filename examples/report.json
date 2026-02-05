@@ -1,0 +1,11 @@
+{
+  "input": "InterVariable.ttf",
+  "outDir": "dist/fontkit",
+  "glyphs": 1284,
+  "files": {
+    "woff2": "fonts/InterVar.woff2",
+    "css": "css/fontface.css",
+    "tokens": "tokens/axes.json",
+    "specimen": "specimen/index.html"
+  }
+}
