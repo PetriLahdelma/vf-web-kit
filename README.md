@@ -42,7 +42,7 @@ npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --o
 ```
 
 ## Demo
-![Terminal Demo](branding/screenshots/terminal-demo.svg)
+![Demo](branding/demos/demo.gif)
 
 ```bash
 vf-web-kit font.woff2 --strings "Hamburgefontsiv 0123456789" --out ./dist/fontkit
