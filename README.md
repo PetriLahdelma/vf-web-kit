@@ -1,20 +1,33 @@
+<picture>
+  <source srcset="branding/hero.svg" type="image/svg+xml">
+  <img alt="vf-web-kit hero" src="branding/hero.png" width="100%">
+</picture>
+
 # vf-web-kit
-Ship variable fonts safely and fast.
+Ship variable fonts safely and fast. Subset glyphs, clamp axes, and ship production-ready kits.
 
-- Builds a production-ready web kit with subsetting, CSS, tokens, and a QA specimen.
-- Subsets glyphs from content or explicit strings via `--content` / `--strings`.
-- Supports axis clamping and presets for production ranges via `--axes` / `--preset`.
+![CI](https://github.com/PetriLahdelma/vf-web-kit/actions/workflows/ci.yml/badge.svg) ![Release](https://img.shields.io/github/v/release/PetriLahdelma/vf-web-kit) ![License](https://img.shields.io/github/license/PetriLahdelma/vf-web-kit) ![Stars](https://img.shields.io/github/stars/PetriLahdelma/vf-web-kit)
 
-**Try in 10 seconds**
+> [!IMPORTANT]
+> Provide representative content or strings to avoid missing glyphs in the subset.
+
+## Quickstart
 ```bash
 npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --out ./dist/fontkit
 ```
 
-**Demo**
-Record a quick run that shows the generated specimen and the output folder size before/after.
+## Demo
+![Terminal Demo](branding/screenshots/terminal-demo.svg)
 
-Star if this saves you time.  
-→ Buzz Kit: /buzz-kit
+```bash
+vf-web-kit font.woff2 --strings "Hamburgefontsiv 0123456789" --out ./dist/fontkit
+```
+
+## Docs
+Start here: [Installation](#installation) · [Configuration](#configuration) · [CLI Help](#cli-help) · [How It Works](#how-it-works) · [Troubleshooting](#troubleshooting)
+
+## Contributing
+See `CONTRIBUTING.md`.
 
 ## Problem Statement
 Shipping variable fonts is harder than it should be. This tool produces a production-ready kit with subsetting, CSS, tokens, and a QA specimen.
@@ -27,16 +40,6 @@ Shipping variable fonts is harder than it should be. This tool produces a produc
 ## Installation
 ```bash
 npm i -D vf-web-kit
-```
-
-## Quickstart
-```bash
-npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --out ./dist/fontkit
-```
-
-Or:
-```bash
-npx vf-web-kit font.woff2 --strings "Hamburgefontsiv 0123456789" --out ./dist/fontkit
 ```
 
 ## Configuration
@@ -94,8 +97,6 @@ No. Pure Node mode only by default.
 - Clamp axes to production ranges.
 - Use `font-display: swap`.
 
-## Contributing
-See `CONTRIBUTING.md`.
-
 ## License
 MIT.
+
