@@ -5,9 +5,11 @@ export default {
   accent: "#A855F7",
   pills: ["Subsetting","Axis clamp","Specimen"],
   demo: ["$ vf-web-kit font.ttf --content \"./content/**/*.{md,tsx}\" --out ./dist/fontkit","Subset: 1,284 glyphs","Kit size: 210 KB (woff2)","Specimen: ./dist/fontkit/specimen.html"],
+  output: ["fonts/InterVar.woff2","css/fontface.css","tokens/axes.json","specimen/index.html"],
   callout: "Provide representative content or strings to avoid missing glyphs in the subset.",
   quickstart: "npx vf-web-kit path/to/font.ttf --content './content/**/*.{html,md,mdx,tsx}' --out ./dist/fontkit",
   hero: { width: 1600, height: 900 },
+  heroAccent: "none",
   icon: {
     inner: `
 <rect x="104" y="128" width="304" height="256" rx="28" stroke="{{accent}}" stroke-width="{{stroke}}"/>

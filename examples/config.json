@@ -1,0 +1,5 @@
+{
+  "preset": "ui",
+  "axes": "wght=300..700",
+  "out": "./dist/fontkit"
+}

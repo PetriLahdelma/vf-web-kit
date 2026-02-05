@@ -2,6 +2,23 @@
   "name": "vf-web-kit",
   "version": "0.1.0",
   "description": "Build production-ready variable font web kits with subsetting, CSS, tokens, and a specimen.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PetriLahdelma/vf-web-kit.git"
+  },
+  "homepage": "https://github.com/PetriLahdelma/vf-web-kit#readme",
+  "bugs": {
+    "url": "https://github.com/PetriLahdelma/vf-web-kit/issues"
+  },
+  "keywords": [
+    "variable-font",
+    "font",
+    "subset",
+    "webfonts",
+    "css",
+    "specimen"
+  ],
   "type": "module",
   "bin": {
     "vf-web-kit": "dist/cli.js"
