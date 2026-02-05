@@ -1,6 +1,6 @@
-function buildSpecimen(font, axes) {
-  const sliders = axes.map((a) => `<label>${a.tag}: <input type="range" min="${a.min}" max="${a.max}" value="${a.min}" data-axis="${a.tag}"></label>`).join('');
-  return `<!doctype html>
+export function buildSpecimen(font, axes) {
+    const sliders = axes.map((a) => `<label>${a.tag}: <input type="range" min="${a.min}" max="${a.max}" value="${a.min}" data-axis="${a.tag}"></label>`).join('');
+    return `<!doctype html>
 <html>
 <head>
   <meta charset="utf-8" />
@@ -24,5 +24,3 @@ function buildSpecimen(font, axes) {
 </body>
 </html>`;
 }
-
-export { buildSpecimen };

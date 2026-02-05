@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import subsetFont from 'subset-font';
-import fontkit from 'fontkit';
+import * as fontkit from 'fontkit';
 import { buildTokens } from './tokens.js';
 import { buildSpecimen } from './specimen.js';
 import { buildReport } from './report.js';
