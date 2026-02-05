@@ -3,7 +3,7 @@
   <img alt="vf-web-kit hero" src="branding/hero.png" width="100%">
 </picture>
 
-# vf-web-kit
+# Variable Font Web Kit
 Ship variable fonts safely and fast. Subset glyphs, clamp axes, and ship production-ready kits.
 
 ![CI](https://github.com/PetriLahdelma/vf-web-kit/actions/workflows/ci.yml/badge.svg) ![Release](https://img.shields.io/github/v/release/PetriLahdelma/vf-web-kit) ![License](https://img.shields.io/github/license/PetriLahdelma/vf-web-kit) ![Stars](https://img.shields.io/github/stars/PetriLahdelma/vf-web-kit)
