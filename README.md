@@ -1,6 +1,20 @@
 # vf-web-kit
-
 Ship variable fonts safely and fast.
+
+- Builds a production-ready web kit with subsetting, CSS, tokens, and a QA specimen.
+- Subsets glyphs from content or explicit strings via `--content` / `--strings`.
+- Supports axis clamping and presets for production ranges via `--axes` / `--preset`.
+
+**Try in 10 seconds**
+```bash
+npx vf-web-kit path/to/font.ttf --content "./content/**/*.{html,md,mdx,tsx}" --out ./dist/fontkit
+```
+
+**Demo**
+Record a quick run that shows the generated specimen and the output folder size before/after.
+
+Star if this saves you time.  
+→ Buzz Kit: /buzz-kit
 
 ## Problem Statement
 Shipping variable fonts is harder than it should be. This tool produces a production-ready kit with subsetting, CSS, tokens, and a QA specimen.
