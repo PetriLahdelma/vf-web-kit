@@ -3,8 +3,16 @@ import path from 'node:path';
 import { Command } from 'commander';
 import fg from 'fast-glob';
 import { extractText } from './lib/content-extract.js';
-import { buildFontKit } from './lib/font-build.js';
+import { buildFontKit, InvalidInputError } from './lib/font-build.js';
 const exitCode = { OK: 0, RUNTIME_ERROR: 3, INVALID_ARGS: 4 };
+function readJsonFile(filePath, label) {
+    try {
+        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+    catch (error) {
+        throw new InvalidInputError(`Invalid ${label} JSON: ${filePath}`);
+    }
+}
 const program = new Command();
 program
     .name('vf-web-kit')
@@ -24,7 +32,7 @@ program
             console.error(`Config not found: ${opts.config}`);
             process.exit(exitCode.INVALID_ARGS);
         }
-        const config = configPath ? JSON.parse(fs.readFileSync(configPath, 'utf8')) : {};
+        const config = configPath ? readJsonFile(configPath, 'config file') : {};
         const merged = { ...config, ...opts };
         if (!fs.existsSync(font)) {
             console.error(`Font not found: ${font}`);
@@ -68,6 +76,10 @@ program
         process.exit(exitCode.OK);
     }
     catch (err) {
+        if (err instanceof InvalidInputError) {
+            console.error(err.message);
+            process.exit(exitCode.INVALID_ARGS);
+        }
         console.error(String(err));
         process.exit(exitCode.RUNTIME_ERROR);
     }

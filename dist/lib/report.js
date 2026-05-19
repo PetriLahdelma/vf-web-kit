@@ -1,5 +1,5 @@
 export function buildReport(font, content, axes) {
-    const glyphs = new Set(Object.keys(font.characterSet || {}).map((c) => Number(c)));
+    const glyphs = new Set(Array.isArray(font.characterSet) ? font.characterSet : []);
     const missing = [];
     for (const ch of content) {
         const code = ch.codePointAt(0) || 0;

@@ -6,10 +6,13 @@ import { buildTokens } from './tokens.js';
 import { buildSpecimen } from './specimen.js';
 import { buildReport } from './report.js';
 
+export class InvalidInputError extends Error {}
+
 export async function buildFontKit(opts: { fontPath: string; outDir: string; content: string; axes?: string; axesFile?: string; preset?: string; }) {
   const buf = fs.readFileSync(opts.fontPath);
+  const explicitAxes = resolveExplicitAxes(opts.axes, opts.axesFile, opts.preset);
   const font = fontkit.openSync(opts.fontPath);
-  const axes = resolveAxes(opts.axes, opts.axesFile, opts.preset, font);
+  const axes = explicitAxes ?? Object.keys(font.variationAxes || {}).map((tag) => normalizeAxis({ tag, ...font.variationAxes[tag] }));
 
   const subset = await subsetFont(buf, opts.content, { targetFormat: 'woff2', variationAxes: axes });
 
@@ -46,11 +49,16 @@ Family: ${font.familyName}
   return report;
 }
 
-function resolveAxes(axes: string | undefined, axesFile: string | undefined, preset: string | undefined, font: any) {
+function resolveExplicitAxes(axes: string | undefined, axesFile: string | undefined, preset: string | undefined) {
   if (axesFile) {
-    const parsed = JSON.parse(fs.readFileSync(axesFile, 'utf8'));
+    let parsed: any;
+    try {
+      parsed = JSON.parse(fs.readFileSync(axesFile, 'utf8'));
+    } catch (error) {
+      throw new InvalidInputError(`Invalid axes file JSON: ${axesFile}`);
+    }
     if (!parsed?.axes || !Array.isArray(parsed.axes)) {
-      throw new Error('axesFile must contain { "axes": [...] }');
+      throw new InvalidInputError('axesFile must contain { "axes": [...] }');
     }
     return parsed.axes.map((axis: any) => normalizeAxis(axis));
   }
@@ -60,7 +68,7 @@ function resolveAxes(axes: string | undefined, axesFile: string | undefined, pre
   if (preset === 'ui') return [{ tag: 'wght', min: 400, max: 700 }];
   if (preset === 'editorial') return [{ tag: 'wght', min: 300, max: 900 }];
   if (preset) throw new Error('Unknown preset (use ui or editorial)');
-  return Object.keys(font.variationAxes || {}).map((tag) => normalizeAxis({ tag, ...font.variationAxes[tag] }));
+  return undefined;
 }
 
 function buildCss(font: any, axes: any[]) {
@@ -75,7 +83,7 @@ function buildCss(font: any, axes: any[]) {
 
 function parseAxisSpec(part: string) {
   const [tag, range] = part.split('=');
-  if (!tag || !range) throw new Error(`Invalid axis spec: ${part}`);
+  if (!tag || !range) throw new InvalidInputError(`Invalid axis spec: ${part}`);
   const [minRaw, maxRaw] = range.split('..');
   const min = Number(minRaw);
   const max = Number(maxRaw);
@@ -84,15 +92,15 @@ function parseAxisSpec(part: string) {
 
 function normalizeAxis(axis: any) {
   if (!axis?.tag || typeof axis.tag !== 'string') {
-    throw new Error('Axis tag is required');
+    throw new InvalidInputError('Axis tag is required');
   }
   const min = Number(axis.min);
   const max = Number(axis.max);
   if (!Number.isFinite(min) || !Number.isFinite(max)) {
-    throw new Error(`Invalid axis range for ${axis.tag}`);
+    throw new InvalidInputError(`Invalid axis range for ${axis.tag}`);
   }
   if (min > max) {
-    throw new Error(`Axis min must be <= max for ${axis.tag}`);
+    throw new InvalidInputError(`Axis min must be <= max for ${axis.tag}`);
   }
   return { tag: axis.tag, min, max };
 }
